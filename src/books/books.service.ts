@@ -15,19 +15,23 @@ export class BooksService {
     return newBook;
   }
 
-  findAll() {
-    return `This action returns all books`;
+  async findAll() {
+    return await this.bookRepository.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} book`;
+  async findOne(id: string) {
+    return this.bookRepository.findById(id);
   }
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  async update(id: string, updateBookDto: UpdateBookDto) {
+    const updatedBook = await this.bookRepository.findByIdAndUpdate(
+      { _id: id },
+      updateBookDto,
+    );
+    return updatedBook;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  async remove(id: string) {
+    return this.bookRepository.findByIdAndDelete(id);
   }
 }

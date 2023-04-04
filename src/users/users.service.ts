@@ -51,7 +51,7 @@ export class UsersService {
     return true;
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return `This action removes a #${id} user`;
   }
 }
