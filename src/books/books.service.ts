@@ -1,11 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Book, BookDocument } from './schemas/book.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class BooksService {
-  create(createBookDto: CreateBookDto) {
-    return 'This action adds a new book';
+  constructor(
+    @InjectModel(Book.name) private bookRepository: Model<BookDocument>,
+  ) {}
+  async create(createBookDto: CreateBookDto) {
+    const newBook = await this.bookRepository.create(createBookDto);
+    return newBook;
   }
 
   findAll() {
