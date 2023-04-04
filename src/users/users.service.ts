@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 @Injectable()
 export class UsersService {
   constructor(
@@ -25,19 +26,32 @@ export class UsersService {
     return user;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async authenticate(createUserDto: CreateUserDto): Promise<string | null> {
+    const { email, password } = createUserDto;
+    const user = await this.findByEmail(email);
+    if (!user) {
+      return null;
+    }
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      return null;
+    }
+    const payload = { email };
+    return await jwt.sign(payload, 'MySecretKey', { expiresIn: '1h' });
+  }
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string): Promise<User> {
+    return this.userRepository.findById(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    return true;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} user`;
   }
 }
