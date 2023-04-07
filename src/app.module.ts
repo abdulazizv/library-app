@@ -9,17 +9,14 @@ import { BooksResolver } from './books/books.resolver';
 
 @Module({
   imports: [
+    BooksModule,
+    UsersModule,
     MongooseModule.forRoot('mongodb://127.0.0.1/library_app'),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       driver: ApolloDriver,
-      buildSchemaOptions: {
-        resolvers: [BooksResolver],
-      },
     }),
-    UsersModule,
-    BooksModule,
   ],
-  providers: [],
+  providers: [BooksResolver],
 })
 export class AppModule {}

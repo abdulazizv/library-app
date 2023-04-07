@@ -16,6 +16,7 @@ export class BooksResolver {
     return this.booksService.findAll();
   }
   @Mutation(() => Book)
+  @Query(() => Book)
   async createBook(
     @Args('createBookInput') createBookInput: CreateBookInput,
   ): Promise<Book> {
@@ -23,6 +24,7 @@ export class BooksResolver {
   }
 
   @Mutation(() => Book)
+  @Query(() => Book)
   async updateBook(
     @Args('updateBookInput') updateBookInput: updateBookInput
   ) {
