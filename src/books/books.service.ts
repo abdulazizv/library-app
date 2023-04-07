@@ -4,6 +4,7 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Book, BookDocument } from './schemas/book.schema';
 import { Model } from 'mongoose';
+import { updateBookInput } from './dto/updateBook.input';
 
 @Injectable()
 export class BooksService {
@@ -33,5 +34,12 @@ export class BooksService {
 
   async remove(id: string) {
     return this.bookRepository.findByIdAndDelete(id);
+  }
+
+  async updateUser(updateBookInput: updateBookInput) {
+    return this.bookRepository.findByIdAndUpdate(
+      updateBookInput.id,
+      updateBookInput,
+    );
   }
 }
