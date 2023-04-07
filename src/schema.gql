@@ -27,7 +27,7 @@ input UpdateBookInput {
 }
 
 type Query {
-  books(userId: String!): [Book!]!
+  books: [Book]
   book(id: ID!): Book
 }
 
